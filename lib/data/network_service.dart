@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class NetworkService {
-  final baseUrl = "http://www.omdbapi.com/?s=Harry&apikey=87d10179";
+  final baseUrl = "http://www.omdbapi.com/";
 
-  Future<List<dynamic>> fetchMovies() async {
+  Future<List<dynamic>> fetchMovies(String searchMovie) async {
     try {
-      final response = await get(Uri.parse(baseUrl ));
+      var apiUrl = baseUrl+"?s="+searchMovie+"&apikey=87d10179";
+      print(apiUrl);
+      final response = await get(Uri.parse(apiUrl));
       print(response.body);
       return jsonDecode(response.body)["Search"] as List;
     } catch (e) {

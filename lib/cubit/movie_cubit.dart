@@ -16,10 +16,10 @@ class MovieCubit extends Cubit<MovieState>{
     emit(MoviesInitial());
   }
 
-  void fetchMovies(){
+  void fetchMovies(String movie){
     emit(MoviesLoading());
     Timer(Duration(seconds:3),(){
-      repository.fetchMovies().then((movies){
+      repository.fetchMovies(movie).then((movies){
         emit(MoviesLoaded(movies:movies));
       }).catchError((onError){
         emit(MoviesError(message:onError.toString()));

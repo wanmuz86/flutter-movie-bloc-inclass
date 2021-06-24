@@ -7,8 +7,8 @@ class Repository {
 
   Repository({required this.networkService});
 
-  Future<List<Movie>> fetchMovies() async {
-    final moviesRaw = await networkService.fetchMovies();
+  Future<List<Movie>> fetchMovies(String movie) async {
+    final moviesRaw = await networkService.fetchMovies(movie);
     return moviesRaw.map((e) => Movie.fromJson(e)).toList();
   }
   Future<Movie> fetchMovieById(String omdbId) async {
