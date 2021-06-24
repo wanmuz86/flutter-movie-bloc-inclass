@@ -5,26 +5,53 @@ import 'package:omdb_api_bloc/data/models/movie.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<MovieCubit>(context).fetchMovies();
+
+    BlocProvider.of<MovieCubit>(context).initializePage();
+
     return Scaffold(
         appBar: AppBar(title: Text("Home"),),
-        body: BlocBuilder<MovieCubit, MovieState>(
-            builder: (context, state) {
-              if (state is MoviesInitial) {
-                return Container();
-              }
-              else if (state is MoviesLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              else if (state is MoviesLoaded) {
-                final movies = (state as MoviesLoaded).movies;
-                return generateListView(movies);
-              }
-              else {
-                final message = (state as MoviesError).message;
-                return Center(child: Text(message),);
-              }
-            })
+        body: Column(
+          children: [
+
+            BlocBuilder<MovieCubit, MovieState>(
+                builder: (context, state) {
+                  if (state is MoviesInitial) {
+                    return generateSearchBar();
+                  }
+                  else if (state is MoviesLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  else if (state is MoviesLoaded) {
+                    final movies = (state as MoviesLoaded).movies;
+                    return Column(
+                      children: [
+                        generateSearchBar(),
+                        Expanded(child: generateListView(movies))
+                      ],
+                    );
+                  
+                  }
+                  else {
+                    final message = (state as MoviesError).message;
+                    return Center(child: Text(message),);
+                  }
+                }),
+          ],
+        )
+    );
+  }
+
+  Row generateSearchBar() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(decoration:
+          InputDecoration(hintText: "Search new movie"),),
+        ),
+        TextButton(onPressed: (){
+    
+        }, child: Text("Search a movie"))
+      ],
     );
   }
 

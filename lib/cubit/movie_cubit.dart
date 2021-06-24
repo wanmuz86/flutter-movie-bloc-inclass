@@ -12,6 +12,10 @@ class MovieCubit extends Cubit<MovieState>{
 
   MovieCubit({required this.repository}) : super(MoviesInitial());
 
+  void initializePage(){
+    emit(MoviesInitial());
+  }
+
   void fetchMovies(){
     emit(MoviesLoading());
     Timer(Duration(seconds:3),(){
